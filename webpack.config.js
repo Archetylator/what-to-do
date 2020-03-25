@@ -31,8 +31,8 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.scss$/,
-				use: ['style-loader','css-loader', 'sass-loader']
+				test: /\.s?css/,
+				use: [prod ? MiniCssExtractPlugin.loader : 'style-loader','css-loader', 'sass-loader']
 			},
 			{
         test: /\.svg$/,
@@ -40,17 +40,6 @@ module.exports = {
 				options: {
 					removeSVGTagAttrs: true
 				}
-			},
-			{
-				test: /\.css$/,
-				use: [
-					/**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
-					prod ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader'
-				]
 			}
 		]
 	},
