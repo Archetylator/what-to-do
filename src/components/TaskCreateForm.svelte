@@ -22,14 +22,19 @@
   export let grindMode;
 
   onMount(() => {
-    
+    input.focus()
   })
 
   $: dateLabel = !selectedDay ? '' : format(selectedDay, 'd MMMM');
+  $: focused = input === document.activeElement;
 
   function handleChange(event) {
     selectedDay = event.detail.date;
     visible = false
+  }
+
+  export function resetValue() {
+    inputValue = ''
   }
 
   export function handleClick() {
@@ -50,9 +55,9 @@
       {/if}
     </span>
     <div class="date">
-      <label>
+      <div style="width: 24px;height: 24px;">
         <DateTimePicker bind:visible={visible} on:change={handleChange} bind:selectedDay={selectedDay}/>
-      </label>
+      </div>
     </div>
   </div>
 </form>
@@ -61,7 +66,7 @@
 .container {
   max-width: 35rem;
   width: 35rem;
-  border: 0.1rem solid #EEEEEE;
+  border: 0.2rem solid #EEEEEE;
   box-sizing: border-box;
   border-radius: 0.5rem;
   background: #ECECEC;
@@ -75,6 +80,7 @@
 
 .container:focus-within {
   filter: brightness(103%);
+  border-bottom: 0.2rem solid rgb(202, 202, 202);
 }
 
 .container:hover {

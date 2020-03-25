@@ -19,11 +19,17 @@
 </script>
 
 <span class="checkbox" {checked} on:click={handleClick}>
+  <input type="checkbox" {checked} style="opacity:0; position:absolute; left:9999px;"/>
   {@html checked ? checkboxCheckedIcon : checkboxIcon }
 </span>
 
 <style type="text/scss">
-  :global(.checkbox svg) {
+  .checkbox {
     height: 24px;
+    width: 24px;
+    display: inline-block;
+  }
+  :global(.checkbox svg) {
+    height: 100%;
   }
 </style>

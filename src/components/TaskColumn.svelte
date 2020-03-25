@@ -1,61 +1,61 @@
 <script>
   import _ from 'lodash';
-  import TaskList from './TaskList';
+  import TaskItem from './TaskItem';
   import {format} from 'date-fns';
-  import { fade } from 'svelte/transition';
+
+
+  import { quintOut, backOut, bounceInOut } from 'svelte/easing';
+  import { crossfade, fade, slide, fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
+
   export let name;
   export let tasks;
   export let group = null;
   export let empty;
-  export let showCompleted;
+  export let send, receive;
 
-  $: toBeDoneTasks = tasks.filter(t => !t.isComplete)
-  $: completedTasks = tasks.filter(t => t.isComplete)
-  $: groupedTasks = Object.entries(_.groupBy(toBeDoneTasks, group))
+  $: groupedTasks = Object.entries(_.groupBy(tasks, group))
 </script>
 
 {#if tasks.length > 0}
-  <div class="container {name.toLowerCase()}" transition:fade={{duration: 300}}>
+  <div class="container {name.toLowerCase()}" transition:fly="{{ x: -200, duration: 200 }}">
     <h3>{name}</h3>
 
     <ul class='column'>
       {#if group}
         {#each groupedTasks as grouped }
-          <li class='group-by'>
-            {format(new Date(grouped[0]), 'd MMMM')}
-          </li>
-          <TaskList tasks={grouped[1]} on:delete on:check />
+          <div in:receive={receive} out:send={send}>
+            <li class='group-by'>
+              {format(new Date(grouped[0]), 'd MMMM')}
+            </li>
+            <ul>
+              {#each grouped[1] as task (task._id)}
+                <div animate:flip="{ { duration: 250 } }">
+                  <TaskItem {...task} on:delete on:check on:newname/>
+                </div>
+              {/each} 
+            </ul>
+          </div>
         {/each}
       {:else}
-        <div transition:fade={{duration: 200}}>
-          <TaskList tasks={toBeDoneTasks} on:delete on:check />
+        <div>
+          <ul>
+            {#each tasks as task (task._id)}
+              <div in:receive={receive} out:send={send} animate:flip="{ { duration: 250 } }">
+                <TaskItem {...task} on:delete on:check on:newname/>
+              </div>
+            {/each} 
+          </ul>
         </div>
       {/if}
     </ul>
-
-    {#if completedTasks.length > 0}
-      {#if toBeDoneTasks.length === 0}
-        <div class='all-completed'>
-          No more tasks
-        </div>
-      {/if}
-      {#if completedTasks.length}
-        <div class="finished" transition:fade={{duration: 200}}>Completed ({completedTasks.length})</div>
-        {#if showCompleted }
-          <div transition:fade={{duration: 200}}>
-            <TaskList tasks={completedTasks} on:delete on:check />
-          </div>
-        {/if}
-      {/if}
-    {/if}
   </div>
 {/if}
 
 <style>
   .container {
-    min-width: 26rem;
-    max-width: 27rem;
-    margin: 0 3rem 0 0;
+    width: 23rem;
+    margin: 0 3rem 1rem 0;
   }
 
   .container.earlier h3 {
@@ -68,6 +68,11 @@
 
   .container.today h3 {
     color: #5BAFEC;
+  }
+
+  .container.completed h3 {
+    /*text-decoration: line-through;*/
+    color: darkgray;
   }
 
   .all-completed {
@@ -119,7 +124,7 @@
 
   h3 {
     font-weight: 700;
-    font-size: 1.9rem;
+    font-size: 2rem;
     line-height: 24px;
     margin: 0 0 1.4rem;
 

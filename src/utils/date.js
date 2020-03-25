@@ -1,7 +1,11 @@
-import {subDays, addDays, isSameDay, parseISO, isBefore, isAfter} from 'date-fns';
+import {subDays, addDays, isSameDay, parseISO, isBefore, isAfter, format} from 'date-fns';
 
 export function yesterday() {
   return subDays(new Date(), 1);
+}
+
+export function todayDay() {
+  return format(new Date(), "iiii")
 }
 
 export function isBeforeYesterday(dateString) {

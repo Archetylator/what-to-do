@@ -24,6 +24,8 @@
     margin: 0;
     height: 25px;
     font-size: 1.4rem;
+    width: max-content;
+    font-weight: 600;
 
     &:active {
       transform: translateY(2px);
@@ -34,9 +36,18 @@
     }
   }
 
-  .transparent {
+  .transparent, .flat {
     background:transparent;
     border: 0;
+  }
+
+  .flat {
+    padding: 0;
+    color: #35a9fd;
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .icon {

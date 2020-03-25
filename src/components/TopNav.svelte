@@ -1,15 +1,25 @@
-<nav>
-  <slot name="left">
-  </slot>
-  
-  <slot name="center">
-  </slot>
+<div class="wrapper">
+  <nav>
+    <slot name="left">
+    </slot>
+    
+    <slot name="center">
+    </slot>
 
-  <slot name="right">
-  </slot>
-</nav>
+    <slot name="right">
+    </slot>
+  </nav>
+</div>
 
 <style>
+  .wrapper {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #fff;
+  }
+
   nav {
     display: flex;
     align-items: center;
@@ -19,11 +29,11 @@
   }
 
   nav > :nth-child(1) {
-    justify-self : flex-start;
+    justify-self: flex-start;
   }
 
   nav > :nth-child(3) {
-    justify-self : flex-end;
+    justify-self: flex-end;
     width: 200px;
   }
 

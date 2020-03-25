@@ -18,12 +18,8 @@ export default class PouchModel extends PouchDB {
     this.bulkDocs(forDelete);
   }
 
-  create(params) {
-    this.post(params).then(function (response) {
-
-    }).catch(function (err) {
-      console.log(err);
-    });
+  async create(params) {
+    return await this.post(params)
   }
 
   update(id, params) {
